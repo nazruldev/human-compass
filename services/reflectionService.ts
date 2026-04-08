@@ -1,4 +1,4 @@
-import { supabase } from "@/utils/supabase";
+import { isSupabaseConfigured, supabase } from "@/utils/supabase";
 
 export type Season = "Spring" | "Summer" | "Autumn" | "Winter";
 
@@ -26,6 +26,10 @@ export async function getHexagramYesNo(opts: {
   hexagramNumber: number;
   season?: Season;
 }): Promise<HexagramYesNoRow | null> {
+  if (!isSupabaseConfigured()) {
+    return null;
+  }
+
   const season = opts.season ?? getCurrentSeason();
   const { data, error } = await supabase
     .from("hexagram_yesno")

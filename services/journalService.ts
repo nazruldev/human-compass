@@ -1,5 +1,5 @@
 import type { JournalEntry, JournalEntryInput } from "@/utils/supabase";
-import { supabase } from "@/utils/supabase";
+import { isSupabaseConfigured, supabase } from "@/utils/supabase";
 
 const TABLE = "journal_entries";
 
@@ -62,6 +62,10 @@ export async function getJournalEntries(
   userId: string | undefined,
   opts?: { page?: number; limit?: number },
 ): Promise<JournalEntriesPage> {
+  if (!isSupabaseConfigured()) {
+    return { entries: [], hasMore: false, nextPage: 1 };
+  }
+
   const page = opts?.page ?? 1;
   const limit = opts?.limit ?? DEFAULT_PAGE_SIZE;
   const from = (page - 1) * limit;
@@ -115,6 +119,10 @@ export async function getHistoricalEntries(
   userId: string | undefined,
   opts?: { page?: number; limit?: number },
 ): Promise<HistoricalEntriesPage> {
+  if (!isSupabaseConfigured()) {
+    return { entries: [], hasMore: false, nextPage: 1 };
+  }
+
   const page = opts?.page ?? 1;
   const limit = opts?.limit ?? DEFAULT_PAGE_SIZE;
   const from = (page - 1) * limit;
@@ -153,6 +161,10 @@ export async function getHistoricalEntries(
 export async function getJournalEntry(
   id: string,
 ): Promise<JournalEntry | null> {
+  if (!isSupabaseConfigured()) {
+    return null;
+  }
+
   const { data, error } = await supabase
     .from(TABLE)
     .select("*")
@@ -171,6 +183,12 @@ export async function createJournalEntry(
   userId: string,
   input: JournalEntryInput,
 ): Promise<JournalEntry> {
+  if (!isSupabaseConfigured()) {
+    throw new Error(
+      "Supabase is not configured. Set SUPABASE_URL and SUPABASE_ANON_KEY in .env.",
+    );
+  }
+
   const { data, error } = await supabase
     .from(TABLE)
     .insert({ ...input, user_id: userId })
@@ -188,6 +206,12 @@ export async function updateJournalEntry(
   id: string,
   updates: Partial<Pick<JournalEntry, "response" | "is_favorite">>,
 ): Promise<JournalEntry> {
+  if (!isSupabaseConfigured()) {
+    throw new Error(
+      "Supabase is not configured. Set SUPABASE_URL and SUPABASE_ANON_KEY in .env.",
+    );
+  }
+
   const { data, error } = await supabase
     .from(TABLE)
     .update({ ...updates, updated_at: new Date().toISOString() })
@@ -203,6 +227,12 @@ export async function updateJournalEntry(
 }
 
 export async function deleteJournalEntry(id: string): Promise<void> {
+  if (!isSupabaseConfigured()) {
+    throw new Error(
+      "Supabase is not configured. Set SUPABASE_URL and SUPABASE_ANON_KEY in .env.",
+    );
+  }
+
   const { error } = await supabase.from(TABLE).delete().eq("id", id);
 
   if (error) {
@@ -217,6 +247,12 @@ export async function deleteAllHistoricalEntries(
 ): Promise<void> {
   if (!userId) {
     throw new Error("deleteAllHistoricalEntries requires userId");
+  }
+
+  if (!isSupabaseConfigured()) {
+    throw new Error(
+      "Supabase is not configured. Set SUPABASE_URL and SUPABASE_ANON_KEY in .env.",
+    );
   }
 
   const { error } = await supabase

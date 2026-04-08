@@ -1,4 +1,4 @@
-import { supabase } from "@/utils/supabase";
+import { isSupabaseConfigured, supabase } from "@/utils/supabase";
 
 export type CanonType = "upper" | "lower";
 
@@ -16,6 +16,10 @@ export type CanonItem = CanonRow & {
 };
 
 async function getCanonByType(type: CanonType): Promise<CanonItem[]> {
+  if (!isSupabaseConfigured()) {
+    return [];
+  }
+
   const { data, error } = await supabase
     .from("canon")
     .select("*")
