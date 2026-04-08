@@ -10,7 +10,6 @@
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "ios": {
-      "buildNumber": "5",
       "supportsTablet": false,
       "bundleIdentifier": "com.constantine.humancompass",
       "infoPlist": {
@@ -18,7 +17,6 @@
       }
     },
     "android": {
-      "versionCode": 5,
       "package": "com.constantine.humancompass",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
