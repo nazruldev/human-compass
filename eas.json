@@ -1,0 +1,66 @@
+{
+  "cli": {
+    "version": ">= 18.1.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "channel": "development"
+    },
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_SUPABASE_URL": "https://qbazgyrogzqaogljtfvs.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFiYXpneXJvZ3pxYW9nbGp0ZnZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgyMjUzOTIsImV4cCI6MjA4MzgwMTM5Mn0.NeIl9WSOevxqlubKu1jQIl7KMHbVCPn4yQDw2Xd1RR4",
+        "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_test_a2V5LW9hcmZpc2gtODUuY2xlcmsuYWNjb3VudHMuZGV2JA",
+        "EXPO_PUBLIC_GOOGLE_AUTH_WEB_CLIENT_ID": "628820377842-mn6jo8a4rmen1nv2ekmjt1s2k2njopvn.apps.googleusercontent.com",
+        "EXPO_PUBLIC_CLERK_AUTH_METHODS": "oauth_google,oauth_microsoft,oauth_apple,password",
+        "EXPO_PUBLIC_S3_BUCKET_URL": "https://s3iching.s3.ap-southeast-1.amazonaws.com/",
+        "EXPO_PUBLIC_TERMS_OF_SERVICE_URL": "https://the-tangconstantine.com/hexa-terms-and-conditions",
+        "EXPO_PUBLIC_PRIVACY_POLICY_URL": "https://the-tangconstantine.com/hexa-privacy-policy"
+      },
+      "channel": "preview"
+    },
+    "production": {
+      "autoIncrement": true,
+      "channel": "production",
+      "env": {
+        "EXPO_PUBLIC_SUPABASE_URL": "https://qbazgyrogzqaogljtfvs.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFiYXpneXJvZ3pxYW9nbGp0ZnZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgyMjUzOTIsImV4cCI6MjA4MzgwMTM5Mn0.NeIl9WSOevxqlubKu1jQIl7KMHbVCPn4yQDw2Xd1RR4",
+        "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_test_a2V5LW9hcmZpc2gtODUuY2xlcmsuYWNjb3VudHMuZGV2JA",
+        "EXPO_PUBLIC_GOOGLE_AUTH_WEB_CLIENT_ID": "628820377842-mn6jo8a4rmen1nv2ekmjt1s2k2njopvn.apps.googleusercontent.com",
+        "EXPO_PUBLIC_CLERK_AUTH_METHODS": "oauth_google,oauth_microsoft,oauth_apple,password",
+        "EXPO_PUBLIC_S3_BUCKET_URL": "https://s3iching.s3.ap-southeast-1.amazonaws.com/",
+        "EXPO_PUBLIC_TERMS_OF_SERVICE_URL": "https://the-tangconstantine.com/hexa-terms-and-conditions",
+        "EXPO_PUBLIC_PRIVACY_POLICY_URL": "https://the-tangconstantine.com/hexa-privacy-policy"
+      },
+      "ios": {
+        "distribution": "store",
+        "credentialsSource": "remote",
+        "simulator": false
+      },
+      "android": {
+        "distribution": "store",
+        "image": "latest"
+      },
+      "developmentClient": false
+    }
+  },
+  "submit": {
+    "production": {
+      "android": {
+        "track": "internal"
+      },
+      "ios": {
+        "appleTeamId": "L28RC7UMG3",
+        "appleId": "nazrul.dev@gmail.com",
+        "ascAppId": "6761703980"
+      }
+    }
+  }
+}

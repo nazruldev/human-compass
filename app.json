@@ -1,17 +1,25 @@
 {
   "expo": {
-    "name": "iching",
-    "slug": "iching",
+    "name": "Human Compass",
+    "slug": "hexa64",
     "version": "1.0.0",
+    "owner": "technovaid",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "iching",
-    "userInterfaceStyle": "automatic",
+    "scheme": "humancompass",
+    "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "buildNumber": "5",
+      "supportsTablet": false,
+      "bundleIdentifier": "com.constantine.humancompass",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
+      "versionCode": 5,
+      "package": "com.constantine.humancompass",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -19,13 +27,16 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
-    },
-    "web": {
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "predictiveBackGestureEnabled": false,
+      "permissions": ["android.permission.RECORD_AUDIO"]
     },
     "plugins": [
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.628820377842-mn6jo8a4rmen1nv2ekmjt1s2k2njopvn"
+        }
+      ],
       "expo-router",
       [
         "expo-splash-screen",
@@ -38,11 +49,46 @@
             "backgroundColor": "#000000"
           }
         }
+      ],
+      "expo-asset",
+      "expo-web-browser",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "This app accesses your photos so you can select and update your profile avatar.",
+          "colors": {
+            "cropToolbarColor": "#000000"
+          },
+          "dark": {
+            "colors": {
+              "cropToolbarColor": "#000000"
+            }
+          }
+        }
       ]
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "EXPO_PUBLIC_SUPABASE_URL": "https://qbazgyrogzqaogljtfvs.supabase.co",
+      "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFiYXpneXJvZ3pxYW9nbGp0ZnZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgyMjUzOTIsImV4cCI6MjA4MzgwMTM5Mn0.NeIl9WSOevxqlubKu1jQIl7KMHbVCPn4yQDw2Xd1RR4",
+      "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_test_a2V5LW9hcmZpc2gtODUuY2xlcmsuYWNjb3VudHMuZGV2JA",
+      "EXPO_PUBLIC_CLERK_AUTH_METHODS": "oauth_google,oauth_microsoft,oauth_apple,password",
+      "EXPO_PUBLIC_S3_BUCKET_URL": "https://s3iching.s3.ap-southeast-1.amazonaws.com/",
+      "EXPO_PUBLIC_TERMS_OF_SERVICE_URL": "https://the-tangconstantine.com/hexa-terms-and-conditions",
+      "EXPO_PUBLIC_PRIVACY_POLICY_URL": "https://the-tangconstantine.com/hexa-privacy-policy",
+      "eas": {
+        "projectId": "f788d43f-cee6-4b14-97c9-12cd31f15e67"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/f788d43f-cee6-4b14-97c9-12cd31f15e67"
     }
   }
 }
