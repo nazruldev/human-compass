@@ -1,5 +1,6 @@
+import { env } from "@/config/env";
 import { HEXAGRAMS } from "@/utils/hexagrams";
-import { supabase } from "@/utils/supabase";
+import { isSupabaseConfigured, supabase } from "@/utils/supabase";
 
 /* ----------------------------- Supabase ----------------------------- */
 
@@ -14,7 +15,33 @@ function withImageUrls(row: any) {
   };
 }
 
+function staticHexagramRow(num: number) {
+  const staticH = HEXAGRAMS.find((h) => h.id === num) ?? HEXAGRAMS[0];
+  return withImageUrls({
+    id: `static-${num}`,
+    number: num,
+    name: staticH.name,
+    chinese_name: "",
+    archetype: "",
+    description: "",
+    affirmation: "",
+    movement_guidance: "",
+    asker_archetype: "",
+    mythic_metaphor: "",
+    created_at: "",
+    updated_at: "",
+  });
+}
+
+function getStaticHexagramsList() {
+  return Array.from({ length: 64 }, (_, i) => staticHexagramRow(i + 1));
+}
+
 export async function getHexagrams() {
+  if (!isSupabaseConfigured()) {
+    return getStaticHexagramsList();
+  }
+
   const { data, error } = await supabase
     .from("hexagrams")
     .select("*")
@@ -53,6 +80,10 @@ export async function getHexagrams() {
 export async function getHexagramByNumber(number: number) {
   const safeNumber = Math.min(64, Math.max(1, Math.floor(number || 1)));
 
+  if (!isSupabaseConfigured()) {
+    return staticHexagramRow(safeNumber);
+  }
+
   const { data, error } = await supabase
     .from("hexagrams")
     .select("*")
@@ -66,27 +97,15 @@ export async function getHexagramByNumber(number: number) {
 
   if (data) return withImageUrls(data);
 
-  const staticH = HEXAGRAMS.find((h) => h.id === safeNumber) ?? HEXAGRAMS[0];
-  return withImageUrls({
-    id: `static-${safeNumber}`,
-    number: safeNumber,
-    name: staticH.name,
-    chinese_name: "",
-    archetype: "",
-    description: "",
-    affirmation: "",
-    movement_guidance: "",
-    asker_archetype: "",
-    mythic_metaphor: "",
-    created_at: "",
-    updated_at: "",
-  });
+  return staticHexagramRow(safeNumber);
 }
 
 /* ----------------------------- Image Config ----------------------------- */
 
 const IMAGE_CONFIG = {
-  BASE_URL: process.env.EXPO_PUBLIC_S3_BUCKET_URL ?? "",
+  get BASE_URL() {
+    return env.s3BucketUrl;
+  },
   IMAGE_EXTENSION: ".png",
 } as const;
 

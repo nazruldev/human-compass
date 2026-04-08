@@ -7,6 +7,7 @@ type PublicEnvKey =
   | "EXPO_PUBLIC_SUPABASE_ANON_KEY"
   | "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY"
   | "EXPO_PUBLIC_CLERK_AUTH_METHODS"
+  | "EXPO_PUBLIC_S3_BUCKET_URL"
   | "EXPO_PUBLIC_TERMS_OF_SERVICE_URL"
   | "EXPO_PUBLIC_PRIVACY_POLICY_URL";
 
@@ -14,6 +15,14 @@ function getManifestExtra(): ExtraMap {
   const expoExtra = Constants.expoConfig?.extra;
   if (expoExtra && typeof expoExtra === "object") {
     return expoExtra as ExtraMap;
+  }
+
+  const embedded = Constants.manifest;
+  if (embedded && typeof embedded === "object" && "extra" in embedded) {
+    const m = (embedded as { extra?: unknown }).extra;
+    if (m && typeof m === "object") {
+      return m as ExtraMap;
+    }
   }
 
   const updateExtra = Constants.manifest2?.extra?.expoClient?.extra;
@@ -34,6 +43,8 @@ function getProcessPublicEnv(name: PublicEnvKey): string | undefined {
       return process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
     case "EXPO_PUBLIC_CLERK_AUTH_METHODS":
       return process.env.EXPO_PUBLIC_CLERK_AUTH_METHODS;
+    case "EXPO_PUBLIC_S3_BUCKET_URL":
+      return process.env.EXPO_PUBLIC_S3_BUCKET_URL;
     case "EXPO_PUBLIC_TERMS_OF_SERVICE_URL":
       return process.env.EXPO_PUBLIC_TERMS_OF_SERVICE_URL;
     case "EXPO_PUBLIC_PRIVACY_POLICY_URL":
@@ -49,6 +60,32 @@ function readPublicEnv(name: PublicEnvKey, fallback = ""): string {
     return fromProcess;
   }
 
+  // Names from .env used by app.config.js (Metro / tooling may expose these on process.env)
+  if (name === "EXPO_PUBLIC_SUPABASE_URL") {
+    const legacy = process.env.SUPABASE_URL;
+    if (typeof legacy === "string" && legacy.trim().length > 0) {
+      return legacy.trim();
+    }
+  }
+  if (name === "EXPO_PUBLIC_SUPABASE_ANON_KEY") {
+    const legacy = process.env.SUPABASE_ANON_KEY;
+    if (typeof legacy === "string" && legacy.trim().length > 0) {
+      return legacy.trim();
+    }
+  }
+  if (name === "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY") {
+    const legacy = process.env.CLERK_PUBLISHABLE_KEY;
+    if (typeof legacy === "string" && legacy.trim().length > 0) {
+      return legacy.trim();
+    }
+  }
+  if (name === "EXPO_PUBLIC_S3_BUCKET_URL") {
+    const legacy = process.env.S3_BUCKET_URL;
+    if (typeof legacy === "string" && legacy.trim().length > 0) {
+      return legacy.trim();
+    }
+  }
+
   const fromExtra = getManifestExtra()[name];
   if (typeof fromExtra === "string" && fromExtra.length > 0) {
     return fromExtra;
@@ -60,20 +97,34 @@ function readPublicEnv(name: PublicEnvKey, fallback = ""): string {
 /**
  * Central environment variables.
  * Gunakan EXPO_PUBLIC_* untuk variabel yang dipakai di client.
+ * Getters re-read manifest / process.env on each access (avoids stale empty reads).
  */
 export const env = {
-  supabase: {
-    url: readPublicEnv("EXPO_PUBLIC_SUPABASE_URL"),
-    anonKey: readPublicEnv("EXPO_PUBLIC_SUPABASE_ANON_KEY"),
+  get supabase() {
+    return {
+      url: readPublicEnv("EXPO_PUBLIC_SUPABASE_URL"),
+      anonKey: readPublicEnv("EXPO_PUBLIC_SUPABASE_ANON_KEY"),
+    };
   },
-  clerk: {
-    publishableKey: readPublicEnv("EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY"),
-    authMethods: readPublicEnv(
-      "EXPO_PUBLIC_CLERK_AUTH_METHODS",
-      "oauth_google,password",
-    ),
+  get clerk() {
+    return {
+      publishableKey: readPublicEnv("EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY"),
+      authMethods: readPublicEnv(
+        "EXPO_PUBLIC_CLERK_AUTH_METHODS",
+        "oauth_google,password",
+      ),
+    };
   },
-  termsOfServiceUrl: readPublicEnv("EXPO_PUBLIC_TERMS_OF_SERVICE_URL"),
-  privacyPolicyUrl: readPublicEnv("EXPO_PUBLIC_PRIVACY_POLICY_URL"),
-  version: packageJson.version,
-} as const;
+  get s3BucketUrl() {
+    return readPublicEnv("EXPO_PUBLIC_S3_BUCKET_URL");
+  },
+  get termsOfServiceUrl() {
+    return readPublicEnv("EXPO_PUBLIC_TERMS_OF_SERVICE_URL");
+  },
+  get privacyPolicyUrl() {
+    return readPublicEnv("EXPO_PUBLIC_PRIVACY_POLICY_URL");
+  },
+  get version() {
+    return packageJson.version;
+  },
+};

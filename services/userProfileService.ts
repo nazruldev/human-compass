@@ -1,4 +1,4 @@
-import { supabase } from "@/utils/supabase";
+import { isSupabaseConfigured, supabase } from "@/utils/supabase";
 
 type ReflectionLimitResult = {
   remaining: number;
@@ -11,6 +11,12 @@ type ReflectionLimitResult = {
 export async function consumeReflectionLimit(
   userId: string,
 ): Promise<ReflectionLimitResult> {
+  if (!isSupabaseConfigured()) {
+    throw new Error(
+      "Supabase is not configured. Set SUPABASE_URL and SUPABASE_ANON_KEY in .env.",
+    );
+  }
+
   const { data: profile, error: profileError } = await supabase
     .from("user_profiles")
     .select("id, reflection_limit")
