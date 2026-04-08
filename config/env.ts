@@ -85,6 +85,24 @@ function readPublicEnv(name: PublicEnvKey, fallback = ""): string {
       return legacy.trim();
     }
   }
+  if (name === "EXPO_PUBLIC_CLERK_AUTH_METHODS") {
+    const legacy = process.env.CLERK_AUTH_METHODS;
+    if (typeof legacy === "string" && legacy.trim().length > 0) {
+      return legacy.trim();
+    }
+  }
+  if (name === "EXPO_PUBLIC_TERMS_OF_SERVICE_URL") {
+    const legacy = process.env.TERMS_OF_SERVICE_URL;
+    if (typeof legacy === "string" && legacy.trim().length > 0) {
+      return legacy.trim();
+    }
+  }
+  if (name === "EXPO_PUBLIC_PRIVACY_POLICY_URL") {
+    const legacy = process.env.PRIVACY_POLICY_URL;
+    if (typeof legacy === "string" && legacy.trim().length > 0) {
+      return legacy.trim();
+    }
+  }
 
   const fromExtra = getManifestExtra()[name];
   if (typeof fromExtra === "string" && fromExtra.length > 0) {

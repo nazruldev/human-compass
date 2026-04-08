@@ -1,14 +1,18 @@
 /**
  * Metode login dinamis sesuai konfigurasi Clerk Dashboard.
- * Set EXPO_PUBLIC_CLERK_AUTH_METHODS di .env (comma-separated).
- * Contoh: oauth_google,oauth_github,password
- *
- * OAuth: oauth_google, oauth_github, oauth_microsoft, oauth_apple, dll.
- * Password: password (email + password)
+ * Di .env isi CLERK_AUTH_METHODS (comma-separated); app.config.js memetakan ke extra.
  */
-const AUTH_METHODS_ENV =
-  process.env.EXPO_PUBLIC_CLERK_AUTH_METHODS ??
-  "oauth_google,oauth_microsoft,oauth_apple,password";
+import { env } from "./env";
+
+function authMethodsRaw(): string {
+  const fromEnv = env.clerk.authMethods.trim();
+  if (fromEnv.length > 0) return fromEnv;
+  const fromProcess =
+    process.env.EXPO_PUBLIC_CLERK_AUTH_METHODS?.trim() ??
+    process.env.CLERK_AUTH_METHODS?.trim();
+  if (fromProcess && fromProcess.length > 0) return fromProcess;
+  return "oauth_google,oauth_microsoft,oauth_apple,password";
+}
 
 const OAUTH_LABELS: Record<string, string> = {
   oauth_google: "Google",
@@ -26,7 +30,8 @@ export type AuthMethod =
   | { type: "password" };
 
 function parseAuthMethods(): AuthMethod[] {
-  const raw = AUTH_METHODS_ENV.split(",")
+  const raw = authMethodsRaw()
+    .split(",")
     .map((s: any) => s.trim().toLowerCase())
     .filter(Boolean);
   const result: AuthMethod[] = [];
