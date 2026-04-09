@@ -5,19 +5,18 @@ import { Input } from "@/components/ui/input";
 import { RadioGroup } from "@/components/ui/radio";
 import { Text } from "@/components/ui/text";
 import { useColor } from "@/hooks/useColor";
+import { CORNERS, FONT_SIZE, HEIGHT } from "@/theme/globals";
 import { getAstrologicalInfo, toAstrologyMetadata } from "@/utils/astrology";
 import {
   isValidYyyyMmDd,
   isoDateToDdMmYyyyDisplay,
   maskTime24,
 } from "@/utils/birthMaskInput";
-import { CORNERS, FONT_SIZE, HEIGHT } from "@/theme/globals";
 import { useUser } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 import { ArrowLeft, Calendar, Clock } from "lucide-react-native";
-import MaskInput, { Masks } from "react-native-mask-input";
 import React, { useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
@@ -26,6 +25,7 @@ import {
   ScrollView,
   View,
 } from "react-native";
+import MaskInput, { Masks } from "react-native-mask-input";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function EditProfileScreen() {

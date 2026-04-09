@@ -14,7 +14,8 @@ import { Dimensions, FlatList, Pressable, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
-const NUM_COLUMNS = 3;
+/** Grid columns for hexagram cards (FlatList + skeleton). */
+const NUM_COLUMNS = 4;
 const GAP = 12;
 const PADDING = 20;
 const CARD_WIDTH =
@@ -100,7 +101,11 @@ function HexagramCard({
   onPress: () => void;
 }) {
   return (
-    <Pressable onPress={onPress} className="items-center">
+    <Pressable
+      onPress={onPress}
+      className="items-center"
+      style={{ width: CARD_WIDTH }}
+    >
       <Image
         cachePolicy="memory-disk"
         source={(item.imageUrlBack ?? item.imageUrl) as ImageSource}
@@ -138,7 +143,7 @@ export default function LibraryScreen() {
         <Text
           variant="subtitle"
           lightColor="white"
-          style={{ marginBottom: 20, fontSize: 24 }}
+          style={{ marginBottom: 20 }}
         >
           Library
         </Text>

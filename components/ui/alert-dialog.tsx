@@ -124,7 +124,11 @@ export function AlertDialog({
       animationType="none"
     >
       <Animated.View
-        style={[styles.backdrop, { backgroundColor: backdropColor }, rBackdropStyle]}
+        style={[
+          styles.backdrop,
+          { backgroundColor: backdropColor },
+          rBackdropStyle,
+        ]}
       >
         <TouchableWithoutFeedback onPress={handleBackdropPress}>
           <Animated.View style={styles.backdropTouchableArea} />
@@ -147,7 +151,9 @@ export function AlertDialog({
               {(title || description) && (
                 <CardHeader>
                   {title ? (
-                    <CardTitle style={{ color: "black" }}>{title}</CardTitle>
+                    <CardTitle style={{ color: "black", fontSize: 20 }}>
+                      {title}
+                    </CardTitle>
                   ) : null}
                   {description ? (
                     <CardDescription style={{ marginTop: -10 }}>

@@ -84,27 +84,26 @@ const IndexHome = () => {
           paddingHorizontal: 20,
           paddingTop: 64,
           paddingBottom: 100,
-          gap: 80,
+          gap: 32,
         }}
         showsVerticalScrollIndicator={false}
       >
-        <View className="w-full ">
-          <Text
-            variant="subtitle"
-            style={{ lineHeight: 14 }}
-            lightColor="white"
-          >
+        <View className="w-full flex-col gap-1">
+          <Text variant="subtitle" lightColor="white">
             {greeting}
           </Text>
           <Text
             variant="title"
             lightColor="white"
-            style={{ maxWidth: 280, lineHeight: 35 }}
+            style={{ maxWidth: 280, marginTop: -15 }}
             numberOfLines={2}
           >
             {user?.fullName ?? "User"}
           </Text>
-          <View className="flex gap-2 flex-row items-center">
+          <View
+            className=" flex flex-row items-center gap-2"
+            style={{ marginTop: -10 }}
+          >
             <Icon name={Calendar1Icon} size={16} lightColor="white" />
             <Text variant="body" lightColor="white">
               {formatBirthDate(user?.unsafeMetadata?.birthDate as string)}
@@ -114,10 +113,18 @@ const IndexHome = () => {
         <DestinyProfile user={user} />
         <View className="flex-col gap-4 w-full items-center">
           <View className="max-w-lg mx-auto">
-            <Text variant="subtitle" lightColor="white">
+            <Text
+              style={{ textAlign: "center" }}
+              variant="subtitle"
+              lightColor="white"
+            >
               Reflect on Your Situation
             </Text>
-            <Text variant="caption" lightColor="white">
+            <Text
+              style={{ textAlign: "center" }}
+              variant="caption"
+              lightColor="white"
+            >
               This is a guided reflection tool inspired by classical philosophy,
               not a prediction system.
             </Text>

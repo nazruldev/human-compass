@@ -234,7 +234,7 @@ const IndexJournal = () => {
   return (
     <SafeAreaView edges={["left", "right"]} className="flex-1 pt-16">
       <View className="px-5 flex-row items-center justify-between mb-4">
-        <Text variant="subtitle" lightColor="white" style={{ fontSize: 24 }}>
+        <Text variant="subtitle" lightColor="white">
           Journal
         </Text>
         <Button
